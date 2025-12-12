@@ -4,7 +4,7 @@ on:
     workflow_dispatch: 
 
 jobs: 
-    lint-all-py:
+    LintAllPy:
         runs-on: ubuntu-latest
 
         # allows you to run mutiple versions of python to test it on
@@ -49,18 +49,32 @@ jobs:
                 . venv/bin/activate && flake8 testing/
 
     test_all_files:
+
+      needs: LintAllPy
+      if: always()
       runs-on: ubuntu-latest
 
       strategy:
             matrix:
                 python-version: [3.11] 
+      
+      
 
       steps: 
         - name: checkout code
-          uses: actions/actions/checkout@v6
+          uses: actions/checkout@v6
 
         - name: Build the testing Docker image
           run: docker build . --file testing/Dockerfile --tag project_plane_testing:$(date +%s)
         
         - name: run the testing docker 
           run: docker run project_plane_testing:$(date +%s)
+    
+    test_past_temp:
+      needs: test_all_files
+      if: always()
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: run_soemthing
+          run: echo  "testing"
