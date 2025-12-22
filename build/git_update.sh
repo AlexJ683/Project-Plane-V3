@@ -18,7 +18,7 @@ if [[ $CURRENT_VERSION == '' ]]
 then
   CURRENT_VERSION='v0.1.0'
 fi
-echo "Current Version: $CURRENT_VERSION"
+echo "Current Version: $CURRENT_VERSION" >&2
 
 # replace . with space so can split into an array
 CURRENT_VERSION_PARTS=(${CURRENT_VERSION//./ })
@@ -38,13 +38,13 @@ elif [[ $VERSION == 'patch' ]]
 then
   VNUM3=$((VNUM3+1))
 else
-  echo "No version type (https://semver.org/) or incorrect type specified, try: -v [major, minor, patch]"
+  echo "No version type (https://semver.org/) or incorrect type specified, try: -v [major, minor, patch]" >&2
   exit 1
 fi
 
 # create new tag
 NEW_TAG="$VNUM1.$VNUM2.$VNUM3"
-echo "($VERSION) updating $CURRENT_VERSION to $NEW_TAG"
+echo "($VERSION) updating $CURRENT_VERSION to $NEW_TAG" >&2
 
 # get current hash and see if it already has a tag
 GIT_COMMIT=`git rev-parse HEAD`
@@ -52,12 +52,12 @@ NEEDS_TAG=`git describe --contains $GIT_COMMIT 2>/dev/null`
 
 # only tag if no tag already
 if [ -z "$NEEDS_TAG" ]; then
-  echo "Tagged with $NEW_TAG"
+  echo "Tagged with $NEW_TAG" >&2
   git tag $NEW_TAG
   git push --tags
   git push
 else
-  echo "Already a tag on this commit"
+  echo "Already a tag on this commit" >&2
 fi
 
 echo $NEW_TAG
