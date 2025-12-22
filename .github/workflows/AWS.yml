@@ -1,6 +1,11 @@
 name: Build and Push Golang Image to AWS ECR
 on:
   workflow_dispatch:
+
+permissions:
+  contents: write
+
+
 jobs:
     Build_and_push_to_AWS:
       runs-on: ubuntu-latest
@@ -39,6 +44,6 @@ jobs:
             ECR_REPOSITORY: project_plane
             IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
           run: |
-            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f backend/Dockerfile backend
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             
