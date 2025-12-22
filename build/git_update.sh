@@ -62,4 +62,9 @@ fi
 
 echo $NEW_TAG
 
+if [[ -n "$GITHUB_OUTPUT" ]]; then
+  echo "git-tag=$NEW_TAG" >> "$GITHUB_OUTPUT"
+fi
+
+
 exit 0
