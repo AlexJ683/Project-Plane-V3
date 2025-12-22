@@ -41,7 +41,7 @@ jobs:
           id: build-image-backend
           env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-            ECR_REPOSITORY: project_plane
+            ECR_REPOSITORY: project_plane_backend
             IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
           run: |
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f backend/Dockerfile backend
@@ -51,7 +51,7 @@ jobs:
           id: build-image-frontend
           env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-            ECR_REPOSITORY: project_plane
+            ECR_REPOSITORY: project_plane_frontend
             IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
           run: |
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f frontend/Dockerfile frontend
