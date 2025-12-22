@@ -22,7 +22,9 @@ jobs:
         - name: Automatic Tagging of Releases
           id: increment-git-tag
           run: |
-            bash ./build/git_update.sh -v major
+            NEW_TAG=$(bash ./build/git_update.sh -v major)
+            echo "git-tag=$NEW_TAG" >> $GITHUB_OUTPUT
+
 
         - name: Push the Image to Amazon ECR
           id: build-image
