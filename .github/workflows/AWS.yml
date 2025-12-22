@@ -18,7 +18,10 @@ jobs:
         - name: Login to Amazon ECR
           id: login-ecr
           uses: aws-actions/amazon-ecr-login@v1
-
+        - name: Debug workspace
+          run: |
+            echo "Listing repo contents:"
+            ls -R .
         - name: Automatic Tagging of Releases
           id: increment-git-tag
           run: |
