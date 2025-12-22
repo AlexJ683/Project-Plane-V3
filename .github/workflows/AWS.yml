@@ -33,7 +33,7 @@ jobs:
         - name: Automatic Tagging of Releases
           id: increment-git-tag
           run: |
-            NEW_TAG=$(bash ./build/git_update.sh -v major)
+            NEW_TAG=$(bash ./build/git_update.sh -v patch)
             echo "git-tag=$NEW_TAG" >> $GITHUB_OUTPUT
 
 
