@@ -18,15 +18,12 @@ jobs:
         - name: Login to Amazon ECR
           id: login-ecr
           uses: aws-actions/amazon-ecr-login@v1
-        - name: Debug workspace
-          run: |
-            echo "Listing repo contents:"
-            ls -R .
-        - name: Automatic Tagging of Releases
-          id: increment-git-tag
-          run: |
-            NEW_TAG=$(bash ./build/git_update.sh -v major)
-            echo "git-tag=$NEW_TAG" >> $GITHUB_OUTPUT
+          
+        #- name: Automatic Tagging of Releases
+          #id: increment-git-tag
+          #run: |
+            #NEW_TAG=$(bash ./build/git_update.sh -v major)
+            #echo "git-tag=$NEW_TAG" >> $GITHUB_OUTPUT
 
 
         - name: Push the Image to Amazon ECR
@@ -34,7 +31,7 @@ jobs:
           env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: project_plane
-            IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
+            # IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
           run: |
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
