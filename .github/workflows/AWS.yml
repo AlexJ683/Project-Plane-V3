@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 jobs:
     Build_and_push_to_AWS:
-      runs-on: unbuntu-latest
+      runs-on: ubuntu-latest
       steps:
         - name: checkout
           uses: actions/checkout@v6
