@@ -1,8 +1,8 @@
 from fastapi import FastAPI, HTTPException, Depends, status, Query
 from pydantic import BaseModel
 from typing import Annotated, List, Optional
-from . import models
-from .database import engine, SessionLocal
+from utils import models
+from utils.database import engine, SessionLocal
 from sqlalchemy.orm import Session
 import uvicorn
 
