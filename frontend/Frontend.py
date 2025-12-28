@@ -44,7 +44,7 @@ class Data_processing():
         
 
     def load_data(self):
-        url = "http://backend.service:80/all_items/"
+        url = "http://backend.service.local:8000/all_items/"
         data = requests.get(url)
         flights = data.json()
         df = pd.DataFrame(flights)
