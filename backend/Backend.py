@@ -62,6 +62,11 @@ async def create_post(post: PostBase, db: db_dep):
     db.add(db_post)
     db.commit()
 
+@app.get("/")
+def root():
+    return {"status": "ok"}
+
+
 if __name__ == "__main__":
     
     models.Base.metadata.create_all(bind=engine)
