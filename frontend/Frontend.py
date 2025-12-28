@@ -44,7 +44,7 @@ class Data_processing():
         
 
     def load_data(self):
-        url = "http://api.backendapi.com/all_items/"
+        url = "http://project_plane_api/all_items/"
         data = requests.get(url)
         flights = data.json()
         df = pd.DataFrame(flights)
