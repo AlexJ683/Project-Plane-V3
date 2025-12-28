@@ -8,4 +8,4 @@ RUN pip install -r requirements_Backend.txt
 
 COPY . . 
 
-CMD [ "python", "Backend.py" ]
+CMD ["uvicorn", "Backend:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -32,6 +32,13 @@ def get_db():
         
 db_dep = Annotated[Session, Depends(get_db)]
 
+@app.on_event("startup")
+def startup_event():
+    try:
+        models.Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        print("DB not ready yet:", e)
+
 @app.get("/all_items/", status_code=status.HTTP_200_OK)
 async def get_all_items(db: db_dep):
     db_posts = db.query(models.flights).all()
@@ -66,10 +73,13 @@ async def create_post(post: PostBase, db: db_dep):
 def root():
     return {"status": "ok"}
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
-if __name__ == "__main__":
-    
-    models.Base.metadata.create_all(bind=engine)
-    uvicorn.run(app, port=8000, host="0.0.0.0")
+
+
+
+
 
 
