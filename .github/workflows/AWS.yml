@@ -44,7 +44,7 @@ jobs:
             ECR_REPOSITORY: project_plane_backend
             IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
           run: |
-            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f backend/Dockerfile backend -p 8000:8000
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f backend/Dockerfile backend
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             
         - name: Push the Image to Amazon ECR frontend
