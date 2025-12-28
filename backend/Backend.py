@@ -65,6 +65,6 @@ async def create_post(post: PostBase, db: db_dep):
 if __name__ == "__main__":
     
     models.Base.metadata.create_all(bind=engine)
-    uvicorn.run(app, port=8000, host="0.0.0.0")
+    uvicorn.run(app, port=80, host="0.0.0.0")
 
 
