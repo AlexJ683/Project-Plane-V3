@@ -79,9 +79,9 @@ def test_dataframe(fake_api_data):
 
 
 class DummyLocation:
-        def __init__(self, lat, lon):
-            self.latitude = lat
-            self.longitude = lon
+    def __init__(self, lat, lon):
+        self.latitude = lat
+        self.longitude = lon
 
 
 """unit tests"""
@@ -111,7 +111,7 @@ def test_get_column_types(data_processing, mock_requests_get,
                               "duration": str,
                               "days_left": int,
                               "price": int}
-    
+
 
 # 3
 @pytest.mark.unit
@@ -137,17 +137,17 @@ def test_check_data(data_processing, mock_requests_get, fake_pandas_data):
                                "duration": "4:00",
                                "days_left": 0,
                                "price": 42},
-                            {"id": 2, "airline": "MockJet",
-                             "flight_number": "MJ456",
-                             "departure_city": "Paris",
-                             "departure_time": 5,
-                             "stops": 1,
-                             "arrival_time": "lunch",
-                             "arrival_city": "LA",
-                             "travel_class": "economy+",
-                             "duration": "12:00",
-                             "days_left": 0,
-                             "price": 500},)
+                              {"id": 2, "airline": "MockJet",
+                               "flight_number": "MJ456",
+                               "departure_city": "Paris",
+                               "departure_time": 5,
+                               "stops": 1,
+                               "arrival_time": "lunch",
+                               "arrival_city": "LA",
+                               "travel_class": "economy+",
+                               "duration": "12:00",
+                               "days_left": 0,
+                               "price": 500},)
 
     with patch("frontend.Frontend.Data_processing.get_column_types",
                return_value=mock_response):
@@ -223,17 +223,17 @@ def test_for_check_data_integration(data_processing, mock_requests_get,
                                "duration": "4:00",
                                "days_left": 0,
                                "price": 42},
-                            {"id": 2, "airline": "MockJet",
-                             "flight_number": "MJ456",
-                             "departure_city": "Paris",
-                             "departure_time": 5,
-                             "stops": 1,
-                             "arrival_time": "lunch",
-                             "arrival_city": "LA",
-                             "travel_class": "economy+",
-                             "duration": "12:00",
-                             "days_left": 0,
-                             "price": 500},)
+                              {"id": 2, "airline": "MockJet",
+                               "flight_number": "MJ456",
+                               "departure_city": "Paris",
+                               "departure_time": 5,
+                               "stops": 1,
+                               "arrival_time": "lunch",
+                               "arrival_city": "LA",
+                               "travel_class": "economy+",
+                               "duration": "12:00",
+                               "days_left": 0,
+                               "price": 500},)
     assert data_processing.check_data(fake_pandas_data) == "Data is valid"
     assert data_processing.check_data(fake_pandas_data.drop(columns=[
         "airline"])) == "Missing column: airline"
@@ -259,7 +259,7 @@ def test_geo_data_intdegration(data_processing, mock_requests_get,
 
 
 """@pytest.mark.streamlit_tests
-def test_search_page_integration(data_processing, mock_requests_get, 
+def test_search_page_integration(data_processing, mock_requests_get,
 fake_pandas_data):
     app = web_app()
 
