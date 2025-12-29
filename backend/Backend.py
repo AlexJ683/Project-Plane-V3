@@ -5,8 +5,10 @@ from utils import models
 from utils.database import engine, SessionLocal
 from sqlalchemy.orm import Session
 import uvicorn
+from mangum import Mangum
 
 app = FastAPI()
+handler = Mangum(app)
 
 class PostBase(BaseModel):
     airline: str
