@@ -24,7 +24,7 @@ class PostBase(BaseModel):
 
 
 def get_db():
-    # create a method of db but no matter what happens 
+    # create a method of db but no matter what happens
     # it will close the db connection
     db = SessionLocal()
     try:
@@ -54,7 +54,7 @@ async def get_all_items(db: db_dep):
 
 @app.get("/posts/{flight_id}", status_code=status.HTTP_200_OK)
 async def read_post(flight_id: int, db: db_dep):
-    db_post = db.query(models.flights).filter(models.flights.id == 
+    db_post = db.query(models.flights).filter(models.flights.id ==
                                               flight_id).first()
     if db_post is None:
         raise HTTPException(status_code=404, detail="flight not found")
@@ -63,7 +63,7 @@ async def read_post(flight_id: int, db: db_dep):
 
 @app.delete("/posts/{flight_id}", status_code=status.HTTP_200_OK)
 async def delete_post(flight_id: int, db: db_dep):
-    db_post = db.query(models.flights).filter(models.flights.id == 
+    db_post = db.query(models.flights).filter(models.flights.id ==
                                               flight_id).first()
     if db_post is None:
         raise HTTPException(status_code=404, detail="flight not found")
