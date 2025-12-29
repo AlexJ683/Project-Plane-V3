@@ -8,6 +8,6 @@ RUN pip install -r requirements_Backend.txt
 
 COPY . . 
 
-Expose 8000
+EXPOSE 8000
 
 CMD ["uvicorn", "Backend:app", "--host", "0.0.0.0", "--port", "8000"]
