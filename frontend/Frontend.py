@@ -12,28 +12,28 @@ class Data_processing():
     def __init__(self):
         self.data = self.load_data()
         self.upload_headers = {"airline": str,
-                            "flight_number": str,
-                                "departure_city": str,
-                                "departure_time": str,
-                                "stops": int,
-                                "arrival_time": str,
-                                "arrival_city": str,
-                                "travel_class": str,
-                                "duration": str,
-                                "days_left": int,
-                                "price": int}
+                               "flight_number": str,
+                               "departure_city": str,
+                               "departure_time": str,
+                               "stops": int,
+                               "arrival_time": str,
+                               "arrival_city": str,
+                               "travel_class": str,
+                               "duration": str,
+                               "days_left": int,
+                               "price": int}
         if self.data.empty:
             self.data_for_upload = [{"airline": "Placedholder",
-                                    "flight_number": "PH000",
-                                        "departure_city": "Placedholder",
-                                        "departure_time": "Placedholder",
-                                        "stops": 0,
-                                        "arrival_time": "Placedholder",
-                                        "arrival_city": "Placedholder",
-                                        "travel_class": "Placedholder",
-                                        "duration": "Placedholder",
-                                        "days_left": 0,
-                                        "price": 0}]
+                                     "flight_number": "PH000",
+                                     "departure_city": "Placedholder",
+                                     "departure_time": "Placedholder",
+                                     "stops": 0,
+                                     "arrival_time": "Placedholder",
+                                     "arrival_city": "Placedholder",
+                                     "travel_class": "Placedholder",
+                                     "duration": "Placedholder",
+                                     "days_left": 0,
+                                     "price": 0}]
             self.post_data()
             self.data = self.load_data()
         else:
@@ -75,7 +75,7 @@ class Data_processing():
             if not all(isinstance(val, expected_type) or
                        pd.isna(val) for val in data[column]):
                 return str("Incorrect data type in column: ",
-                        column, ". Expected ", expected_type.__name__, ".")
+                           column, ". Expected ", expected_type.__name__, ".")
         return "Data is valid"
 
     def convert_to_JSON(self, data):
@@ -95,9 +95,9 @@ class Data_processing():
                         return f"Failed to post data: {response.status_code}"
             except Exception as e:
                 return f"Data type invalid, data not posted:{e}"
-                
+
         return "Data posted successfully"
-    
+
     def w2n_stuff(self, text):
         try:
             number = w2n.word_to_num(text)
@@ -166,7 +166,7 @@ class web_app():
     def search_page(self):
         st.title("Flight Data search")
         st.write("Search for a flight by flight number\n"
-                    "Please enter a flight number")
+                 "Please enter a flight number")
         flight_number = st.text_input("Flight Number:",
                                       key="flight_number_input")
         if flight_number:
@@ -191,28 +191,28 @@ class web_app():
                                              zoom_start=4)
                     folium.Marker([flight_locations["latitude_departure"],
                                    flight_locations["longitude_departure"]],
-                                    popup=f"Departure: {flight_details.iloc[0]
-                                                    ['departure_city']}",
-                                    icon=folium.Icon(color = "blue",
-                                                 icon ="star")).add_to(m)
+                                   popup=f"Departure: {flight_details.iloc[0]
+                                   ['departure_city']}",
+                                   icon=folium.Icon(color = "blue",
+                                   icon ="star")).add_to(m)
                     folium.Marker([flight_locations["latitude_arrival"],
                                    flight_locations["longitude_arrival"]],
-                                    popup=f"Arrival: {
-                                        flight_details.iloc[0]['arrival_city']}",
-                                            icon = folium.Icon(color = "blue",
-                                                    icon = "star")).add_to(m)
+                                   popup=f"Arrival: {
+                                   flight_details.iloc[0]['arrival_city']}",
+                                   icon = folium.Icon(color = "blue",
+                                   icon = "star")).add_to(m)
                     folium.PolyLine(locations = [[flight_locations[
-                        "latitude_departure"],
-                        flight_locations["longitude_departure"]],
-                                            [flight_locations[
-                                                "latitude_arrival"],
-                                             flight_locations[
-                                                 "longitude_arrival"]]],
+                                    "latitude_departure"],
+                                    flight_locations["longitude_departure"]],
+                                    [flight_locations[
+                                    "latitude_arrival"],
+                                    flight_locations[
+                                    "longitude_arrival"]]],
                                     color="blue").add_to(m)
                     st_folium(m, width=1200, height=500)
                 else:
                     st.write("Could not retrieve geolocation "
-                    "data for the specified cities.")
+                             "data for the specified cities.")
             else:
                 st.write("No flight found with that flight number.")
 
