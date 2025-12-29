@@ -1,6 +1,12 @@
-name: CI/CD workflow
+name: CI/CD workflow frontend
 
 on:
+    push:
+        paths:
+            - 'frontend/**'
+    pull_request:
+        paths: 
+            - 'frontend/**'
     workflow_dispatch: 
 
 jobs: 
@@ -36,10 +42,6 @@ jobs:
             - name: activate virtual environment
               run: python -m venv venv && source venv/bin/activate && python -m pip install --upgrade pip && pip install flake8 && pip3 install -r requirements.txt
 
-            - name: lint with flakes backend
-              run: |
-                . venv/bin/activate && flake8 backend/
-            
             - name: lint with flakes frontend
               run: |
                 . venv/bin/activate && flake8 frontend/
@@ -201,17 +203,6 @@ jobs:
           run: |
             NEW_TAG=$(bash ./build/git_update.sh -v patch)
             echo "git-tag=$NEW_TAG" >> $GITHUB_OUTPUT
-
-
-        - name: Push the Image to Amazon ECR backend
-          id: build-image-backend
-          env:
-            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-            ECR_REPOSITORY: project_plane_backend
-            IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
-          run: |
-            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f backend/Dockerfile backend
-            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             
         - name: Push the Image to Amazon ECR frontend
           id: build-image-frontend
@@ -224,3 +215,4 @@ jobs:
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   
+      

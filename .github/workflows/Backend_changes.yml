@@ -1,6 +1,12 @@
-name: CI/CD workflow
+name: CI/CD workflow backend
 
 on:
+    push:
+        paths:
+            - 'backend/**'
+    pull_request:
+        paths: 
+            - 'backend/**'
     workflow_dispatch: 
 
 jobs: 
@@ -39,10 +45,6 @@ jobs:
             - name: lint with flakes backend
               run: |
                 . venv/bin/activate && flake8 backend/
-            
-            - name: lint with flakes frontend
-              run: |
-                . venv/bin/activate && flake8 frontend/
             
             - name: lint with flakes testing
               run: |
@@ -212,15 +214,4 @@ jobs:
           run: |
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f backend/Dockerfile backend
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-            
-        - name: Push the Image to Amazon ECR frontend
-          id: build-image-frontend
-          env:
-            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-            ECR_REPOSITORY: project_plane_frontend
-            IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
-          run: |
-            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f frontend/Dockerfile frontend
-            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
   
