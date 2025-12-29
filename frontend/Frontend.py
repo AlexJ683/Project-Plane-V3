@@ -74,8 +74,7 @@ class Data_processing():
                 return f"Missing column: {column}"
             if not all(isinstance(val, expected_type) or
                        pd.isna(val) for val in data[column]):
-                return str("Incorrect data type in column: ",
-                           column, ". Expected ", expected_type.__name__, ".")
+                return "Incorrect data type"
         return "Data is valid"
 
     def convert_to_JSON(self, data):

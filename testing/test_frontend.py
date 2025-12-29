@@ -154,9 +154,8 @@ def test_check_data(data_processing, mock_requests_get, fake_pandas_data):
         assert data_processing.check_data(fake_pandas_data) == "Data is valid"
         assert data_processing.check_data(fake_pandas_data.drop
                                           (columns=["airline"])) == "Missing \
-        column: airline"
-        assert data_processing.check_data(weird_data) == "Incorrect data type\
-         in column: departure_time. Expected str."
+column: airline"
+        assert data_processing.check_data(weird_data) == "Incorrect data type"
 
 
 # 4
@@ -173,7 +172,8 @@ def test_post_data(data_processing,
                    mock_requests_get, fake_pandas_data):
     assert data_processing.post_data() == "Data posted successfully"
     data_processing.data_for_upload = {"test": "test"}
-    assert data_processing.post_data() == "Data type invalid, data not posted"
+    assert data_processing.post_data() == "Data type invalid, data not \
+posted:string indices must be integers, not 'str'"
 
 
 # 6
