@@ -191,8 +191,9 @@ class web_app():
                                              zoom_start=4)
                     folium.Marker([flight_locations["latitude_departure"],
                                   flight_locations["longitude_departure"]],
-                                  popup=f"Departure: {flight_details.iloc[0]
-                                  ['departure_city']}",
+                                  popup=str("Departure:", 
+                                            flight_details.iloc[0]
+                                            ['departure_city']),
                                   icon=folium.Icon(color="blue",
                                   icon="star")).add_to(m)
                     folium.Marker([flight_locations["latitude_arrival"],
