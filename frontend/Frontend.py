@@ -190,24 +190,22 @@ class web_app():
                                                  "longitude_arrival"]) / 2],
                                              zoom_start=4)
                     folium.Marker([flight_locations["latitude_departure"],
-                                   flight_locations["longitude_departure"]],
-                                   popup=f"Departure: {flight_details.iloc[0]
-                                   ['departure_city']}",
-                                   icon=folium.Icon(color = "blue",
-                                   icon ="star")).add_to(m)
+                                  flight_locations["longitude_departure"]],
+                                  popup=f"Departure: {flight_details.iloc[0]
+                                  ['departure_city']}",
+                                  icon=folium.Icon(color="blue",
+                                  icon="star")).add_to(m)
                     folium.Marker([flight_locations["latitude_arrival"],
-                                   flight_locations["longitude_arrival"]],
-                                   popup=f"Arrival: {
-                                   flight_details.iloc[0]['arrival_city']}",
-                                   icon = folium.Icon(color = "blue",
-                                   icon = "star")).add_to(m)
-                    folium.PolyLine(locations = [[flight_locations[
+                                  flight_locations["longitude_arrival"]],
+                                  popup=f"Arrival: {
+                                  flight_details.iloc[0]['arrival_city']}",
+                                  icon=folium.Icon(color="blue",
+                                  icon="star")).add_to(m)
+                    folium.PolyLine(locations=[[flight_locations[
                                     "latitude_departure"],
                                     flight_locations["longitude_departure"]],
-                                    [flight_locations[
-                                    "latitude_arrival"],
-                                    flight_locations[
-                                    "longitude_arrival"]]],
+                                    [flight_locations["latitude_arrival"],
+                                    flight_locations["longitude_arrival"]]],
                                     color="blue").add_to(m)
                     st_folium(m, width=1200, height=500)
                 else:
