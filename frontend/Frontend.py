@@ -205,7 +205,7 @@ class web_app():
                                     "latitude_departure"],
                                     flight_locations["longitude_departure"]],
                                     [flight_locations["latitude_arrival"],
-                                    flight_locations["longitude_arrival"]]],
+                                     flight_locations["longitude_arrival"]]],
                                     color="blue").add_to(m)
                     st_folium(m, width=1200, height=500)
                 else:
