@@ -153,10 +153,10 @@ def test_check_data(data_processing, mock_requests_get, fake_pandas_data):
                return_value=mock_response):
         assert data_processing.check_data(fake_pandas_data) == "Data is valid"
         assert data_processing.check_data(fake_pandas_data.drop
-                                          (columns=["airline"])) == "Missing "
-        "column: airline"
-        assert data_processing.check_data(weird_data) == "Incorrect data type"
-        " in column: departure_time. Expected str."
+                                          (columns=["airline"])) == "Missing \
+        column: airline"
+        assert data_processing.check_data(weird_data) == "Incorrect data type\
+         in column: departure_time. Expected str."
 
 
 # 4
