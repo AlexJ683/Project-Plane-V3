@@ -24,29 +24,27 @@ class Data_processing():
                                 "price": int}
         if self.data.empty:
             self.data_for_upload = [{"airline": "Placedholder",
-                                "flight_number": "PH000",
-                                "departure_city":"Placedholder",
-                                "departure_time": "Placedholder",
-                                "stops": 0,
-                                "arrival_time": "Placedholder",
-                                "arrival_city": "Placedholder",
-                                "travel_class": "Placedholder",
-                                "duration": "Placedholder",
-                                "days_left": 0,
-                                "price": 0}]
+                                        "flight_number": "PH000",
+                                        "departure_city": "Placedholder",
+                                        "departure_time": "Placedholder",
+                                        "stops": 0,
+                                        "arrival_time": "Placedholder",
+                                        "arrival_city": "Placedholder",
+                                        "travel_class": "Placedholder",
+                                        "duration": "Placedholder",
+                                        "days_left": 0,
+                                        "price": 0}]
             self.post_data()
             self.data = self.load_data()
         else:
             self.data_for_upload = self.data.to_dict(orient="records")
-            
-        
+
     def load_data(self):
         url = "http://13.60.194.224:8000/all_items/"
         data = requests.get(url)
         flights = data.json()
         df = pd.DataFrame(flights)
         return df
-    
 
     def get_column_types(self, df=None):
         """Extract column names and their data types as a dictionary."""
@@ -69,7 +67,6 @@ class Data_processing():
             column_types[col] = type_map.get(dtype_str, str)
         return column_types
     
-
     def check_data(self, data):
         expected_types = self.get_column_types()
         for column, expected_type in expected_types.items():
@@ -81,12 +78,10 @@ class Data_processing():
                         column, ". Expected ", expected_type.__name__, ".")
         return "Data is valid"
     
-
     def convert_to_JSON(self, data):
         self.data_for_upload= data.to_dict(orient="records")
         return self.data_for_upload
     
-
     def post_data(self):
         url = "http://13.60.194.224:8000/posts/"
         for data in self.data_for_upload:
@@ -103,7 +98,6 @@ class Data_processing():
                 
         return "Data posted successfully"
     
-
     def w2n_stuff(self, text):
         try:
             number = w2n.word_to_num(text)
@@ -113,17 +107,14 @@ class Data_processing():
                 return 3
             return text
     
-
     def int_to_str_duration(self, duration):
         return str(duration)
     
-
     @st.cache_resource
     def get_geolocator(_self):
         """Cache the geolocator instance to avoid repeated initialization."""
         return Nominatim(user_agent="flight_app")
     
-
     @st.cache_data
     def geo_data(_self, departure_city: str, arrival_city: str):
         """Cache geocoding results by city names."""
@@ -150,7 +141,6 @@ class web_app():
     def __init__(self):
         self.data_processing = Data_processing()
 
-
     def home_page(self):
         st.title("Flight Data Home")
         left, right = st.columns([1, 1])
@@ -173,7 +163,6 @@ class web_app():
         
         st.dataframe(self.data_processing.data)
     
-
     def search_page(self):
         st.title("Flight Data search")
         st.write("Search for a flight by flight number\n" \
@@ -227,7 +216,6 @@ class web_app():
             else:
                 st.write("No flight found with that flight number.")
     
-
     def data_upload_page(self):
         st.title("Upload Flight Data")
         uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
