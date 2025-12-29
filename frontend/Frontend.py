@@ -198,8 +198,8 @@ class web_app():
                                   icon="star")).add_to(m)
                     folium.Marker([flight_locations["latitude_arrival"],
                                   flight_locations["longitude_arrival"]],
-                                  popup=f"Arrival: {
-                                  flight_details.iloc[0]['arrival_city']}",
+                                  popup=str("Arrival:",
+                                  flight_details.iloc[0]['arrival_city']),
                                   icon=folium.Icon(color="blue",
                                   icon="star")).add_to(m)
                     folium.PolyLine(locations=[[flight_locations[
