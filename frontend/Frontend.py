@@ -12,7 +12,7 @@ class Data_processing():
     def __init__(self):
         self.data = self.load_data()
         self.upload_headers = {"airline": str,
-                                "flight_number": str,
+                            "flight_number": str,
                                 "departure_city": str,
                                 "departure_time": str,
                                 "stops": int,
@@ -24,7 +24,7 @@ class Data_processing():
                                 "price": int}
         if self.data.empty:
             self.data_for_upload = [{"airline": "Placedholder",
-                                        "flight_number": "PH000",
+                                    "flight_number": "PH000",
                                         "departure_city": "Placedholder",
                                         "departure_time": "Placedholder",
                                         "stops": 0,
@@ -66,35 +66,35 @@ class Data_processing():
             dtype_str = str(dtype)
             column_types[col] = type_map.get(dtype_str, str)
         return column_types
-    
+
     def check_data(self, data):
         expected_types = self.get_column_types()
         for column, expected_type in expected_types.items():
             if column not in data.columns:
                 return f"Missing column: {column}"
-            if not all(isinstance(val, expected_type) or 
+            if not all(isinstance(val, expected_type) or
                        pd.isna(val) for val in data[column]):
-                return ("Incorrect data type in column: ",
+                return str("Incorrect data type in column: ",
                         column, ". Expected ", expected_type.__name__, ".")
         return "Data is valid"
-    
+
     def convert_to_JSON(self, data):
-        self.data_for_upload= data.to_dict(orient="records")
+        self.data_for_upload = data.to_dict(orient="records")
         return self.data_for_upload
-    
+
     def post_data(self):
         url = "http://13.60.194.224:8000/posts/"
         for data in self.data_for_upload:
             try:
                 if len(self.data) != 0 and data[
-                    "flight_number"] in self.data["flight_number"].values:
+                        "flight_number"] in self.data["flight_number"].values:
                     pass  # Skip duplicate flight_number
                 else:
                     response = requests.post(url, json=data)
                     if response.status_code not in (200, 201):
                         return f"Failed to post data: {response.status_code}"
-            except:
-                return "Data type invalid, data not posted"
+            except Exception as e:
+                return f"Data type invalid, data not posted:{e}"
                 
         return "Data posted successfully"
     
@@ -106,15 +106,15 @@ class Data_processing():
             if text == "two_or_more":
                 return 3
             return text
-    
+
     def int_to_str_duration(self, duration):
         return str(duration)
-    
+
     @st.cache_resource
     def get_geolocator(_self):
         """Cache the geolocator instance to avoid repeated initialization."""
         return Nominatim(user_agent="flight_app")
-    
+
     @st.cache_data
     def geo_data(_self, departure_city: str, arrival_city: str):
         """Cache geocoding results by city names."""
@@ -125,7 +125,7 @@ class Data_processing():
         except Exception as e:
             st.error(f"Geocoding error: {e}")
             return None
-        
+
         if dep_location and arr_location:
             flight_location = {
                 "latitude_departure": dep_location.latitude,
@@ -146,7 +146,7 @@ class web_app():
         left, right = st.columns([1, 1])
         with left:
             bar_chart = px.bar(self.data_processing.data[
-                'airline'].value_counts(), 
+                'airline'].value_counts(),
                 title="Number of Flights per Airline")
             st.plotly_chart(bar_chart)
             st.write("Airlines available:", self.data_processing.data[
@@ -160,13 +160,13 @@ class web_app():
                              title="Price vs Duration by Airline")
             st.plotly_chart(fig)
             st.write("Total flights loaded:", len(self.data_processing.data))
-        
+
         st.dataframe(self.data_processing.data)
-    
+
     def search_page(self):
         st.title("Flight Data search")
-        st.write("Search for a flight by flight number\n" \
-        "Please enter a flight number")
+        st.write("Search for a flight by flight number\n"
+                    "Please enter a flight number")
         flight_number = st.text_input("Flight Number:",
                                       key="flight_number_input")
         if flight_number:
@@ -189,33 +189,33 @@ class web_app():
                                              + flight_locations[
                                                  "longitude_arrival"]) / 2],
                                              zoom_start=4)
-                    folium.Marker([flight_locations["latitude_departure"], 
+                    folium.Marker([flight_locations["latitude_departure"],
                                    flight_locations["longitude_departure"]],
-                                popup=f"Departure: {flight_details.iloc[0]
-                                                    ['departure_city']}", 
-                                icon=folium.Icon(color = "blue", 
-                                                 icon="star")).add_to(m)
-                    folium.Marker([flight_locations["latitude_arrival"], 
-                                   flight_locations["longitude_arrival"]],
-                                popup=f"Arrival: {
-                                    flight_details.iloc[0]['arrival_city']}", 
+                                    popup=f"Departure: {flight_details.iloc[0]
+                                                    ['departure_city']}",
                                     icon=folium.Icon(color = "blue",
+                                                 icon ="star")).add_to(m)
+                    folium.Marker([flight_locations["latitude_arrival"],
+                                   flight_locations["longitude_arrival"]],
+                                    popup=f"Arrival: {
+                                        flight_details.iloc[0]['arrival_city']}",
+                                            icon = folium.Icon(color = "blue",
                                                     icon = "star")).add_to(m)
-                    folium.PolyLine(locations=[[flight_locations[
-                        "latitude_departure"], 
+                    folium.PolyLine(locations = [[flight_locations[
+                        "latitude_departure"],
                         flight_locations["longitude_departure"]],
                                             [flight_locations[
-                                                "latitude_arrival"], 
+                                                "latitude_arrival"],
                                              flight_locations[
                                                  "longitude_arrival"]]],
                                     color="blue").add_to(m)
                     st_folium(m, width=1200, height=500)
                 else:
-                    st.write("Could not retrieve geolocation " \
+                    st.write("Could not retrieve geolocation "
                     "data for the specified cities.")
             else:
                 st.write("No flight found with that flight number.")
-    
+
     def data_upload_page(self):
         st.title("Upload Flight Data")
         uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
@@ -234,34 +234,36 @@ class web_app():
             else:
                 # data upload
                 Json_data = self.data_processing.convert_to_JSON(df)
+                Json_data = Json_data
                 if st.button("Upload Data"):
                     message = self.data_processing.post_data()
                     st.success(message)
-                    self.data_processing.data = self.data_processing.load_data()
+                    self.data_processing.data = self.data_processing.load_data(
+                    )
 
 
 if __name__ == "__main__":
     app = web_app()
 
     st.set_page_config(page_title="Flight Data App", layout="wide")
-    ROUTES = {"Home": app.home_page, "Overview": app.search_page, 
+    ROUTES = {"Home": app.home_page, "Overview": app.search_page,
               "Data Upload": app.data_upload_page}
     query_params = st.query_params
     page = query_params.get("page", ["Home"])[0] if isinstance(
         query_params.get("page"), list) else query_params.get("page", "Home")
     if page not in ROUTES:
         page = "Home"
-        
+
     with st.sidebar:
         st.title("Navigation")
-        selection = st.radio("Go to", list(ROUTES.keys()), 
-                             index=list(ROUTES.keys()).index(page), 
+        selection = st.radio("Go to", list(ROUTES.keys()),
+                             index=list(ROUTES.keys()).index(page),
                              format_func=str.title)
 
     if selection != page:
         st.query_params["page"] = selection
         st.rerun()
-    
+
     if page == "Home":
         app.home_page()
     elif page == "Overview":
