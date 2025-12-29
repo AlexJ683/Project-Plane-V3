@@ -26,17 +26,17 @@ client = TestClient(app)
 
 
 def test_root(mock_db_session):
-    response = client.post("/posts/", json = {"airline": "Placedholder",
-                                                "flight_number": "PH000",
-                                                "departure_city": "Placedholder",
-                                                "departure_time": "Placedholder",
-                                                "stops": 0,
-                                                "arrival_time": "Placedholder",
-                                                "arrival_city": "Placedholder",
-                                                "travel_class": "Placedholder",
-                                                "duration": "Placedholder",
-                                                "days_left": 0,
-                                                "price": 0})
+    response = client.post("/posts/", json={"airline": "Placedholder",
+                                            "flight_number": "PH000",
+                                            "departure_city": "Placedholder",
+                                            "departure_time": "Placedholder",
+                                            "stops": 0,
+                                            "arrival_time": "Placedholder",
+                                            "arrival_city": "Placedholder",
+                                            "travel_class": "Placedholder",
+                                            "duration": "Placedholder",
+                                            "days_left": 0,
+                                            "price": 0})
     assert response.status_code == 201
     mock_db_session.add.assert_called()
     mock_db_session.commit.assert_called()
@@ -59,6 +59,3 @@ def test_delete(mock_db_session):
     assert response.status_code == 200
     mock_db_session.delete.assert_called()
     mock_db_session.commit.assert_called()
-
-
-
