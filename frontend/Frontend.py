@@ -44,7 +44,7 @@ class Data_processing():
         
 
     def load_data(self):
-        url = "http://backend.service.local:8000/all_items/"
+        url = "http://13.60.194.224:8000/all_items/"
         data = requests.get(url)
         flights = data.json()
         df = pd.DataFrame(flights)
@@ -85,7 +85,7 @@ class Data_processing():
         return self.data_for_upload
     
     def post_data(self):
-        url = "http://api.backendapi.com/posts/"
+        url = "http://13.60.194.224:8000/posts/"
         for data in self.data_for_upload:
             try:
                 if len(self.data) != 0 and data["flight_number"] in self.data["flight_number"].values:
