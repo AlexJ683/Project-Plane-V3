@@ -1,12 +1,13 @@
-from fastapi import FastAPI, HTTPException, Depends, status, Query
+from fastapi import FastAPI, HTTPException, Depends, status
 from pydantic import BaseModel
-from typing import Annotated, List, Optional
+from typing import Annotated
 from utils import models
 from utils.database import engine, SessionLocal
 from sqlalchemy.orm import Session
-import uvicorn
+
 
 app = FastAPI()
+
 
 class PostBase(BaseModel):
     airline: str
@@ -23,14 +24,17 @@ class PostBase(BaseModel):
 
 
 def get_db():
-    # create a method of db but no matter what happens it will close the db connection
+    # create a method of db but no matter what happens 
+    # it will close the db connection
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
-        
+
+
 db_dep = Annotated[Session, Depends(get_db)]
+
 
 @app.on_event("startup")
 def startup_event():
@@ -38,6 +42,7 @@ def startup_event():
         models.Base.metadata.create_all(bind=engine)
     except Exception as e:
         print("DB not ready yet:", e)
+
 
 @app.get("/all_items/", status_code=status.HTTP_200_OK)
 async def get_all_items(db: db_dep):
@@ -49,19 +54,23 @@ async def get_all_items(db: db_dep):
 
 @app.get("/posts/{flight_id}", status_code=status.HTTP_200_OK)
 async def read_post(flight_id: int, db: db_dep):
-    db_post = db.query(models.flights).filter(models.flights.id == flight_id).first()
+    db_post = db.query(models.flights).filter(models.flights.id == 
+                                              flight_id).first()
     if db_post is None:
         raise HTTPException(status_code=404, detail="flight not found")
     return db_post
 
+
 @app.delete("/posts/{flight_id}", status_code=status.HTTP_200_OK)
 async def delete_post(flight_id: int, db: db_dep):
-    db_post = db.query(models.flights).filter(models.flights.id == flight_id).first()
+    db_post = db.query(models.flights).filter(models.flights.id == 
+                                              flight_id).first()
     if db_post is None:
         raise HTTPException(status_code=404, detail="flight not found")
     db.delete(db_post)
     db.commit()
     return {"detail": "Post deleted"}
+
 
 @app.post("/posts/", status_code=status.HTTP_201_CREATED)
 async def create_post(post: PostBase, db: db_dep):
@@ -69,17 +78,12 @@ async def create_post(post: PostBase, db: db_dep):
     db.add(db_post)
     db.commit()
 
+
 @app.get("/")
 def root():
     return {"status": "ok"}
 
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
-
-
-
-
-
-
-
