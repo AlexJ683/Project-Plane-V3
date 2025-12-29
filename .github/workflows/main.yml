@@ -63,11 +63,14 @@ jobs:
         - name: checkout code
           uses: actions/checkout@v6
 
+        - name: Set image tag
+          run: echo "IMAGE_TAG=$(date +%s)"
+
         - name: Build the testing Docker image
-          run: docker build . --file testing/Dockerfile --tag project_plane_testing:$(date +%s)
+          run: docker build . --file testing/Dockerfile --tag project_plane_testing:${IMAGE_TAG}
         
         - name: run the testing docker 
-          run: docker run project_plane_testing:$(date +%s)
+          run: docker run project_plane_testing:${IMAGE_TAG}
 
     system_test_using_docker_compose:
       needs: test_all_files
