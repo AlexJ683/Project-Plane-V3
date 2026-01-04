@@ -1,10 +1,12 @@
 FROM python:3.11.9-slim AS base
 
-WORKDIR /Project_plane_build/backend
+WORKDIR /Project_plane_build
 
-COPY requirements_Backend.txt .
+COPY . .
 
 RUN pip install -r requirements_Backend.txt
+
+WORKDIR /Project_plane_build/backend
 
 COPY . . 
 
