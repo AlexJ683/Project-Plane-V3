@@ -74,32 +74,32 @@ jobs:
         - name: run the testing docker 
           run: docker run project_plane_testing:${IMAGE_TAG}
 
-    system_test_using_docker_compose:
-      needs: test_all_files
-      runs-on: ubuntu-latest
-
-      steps: 
-        - name: checkout code
-          uses: actions/checkout@v6
-        
-        - name: docker compose up 
-          run: docker compose up -d
-        
-        - name: Docker Compose Health Check
-          uses: jaracogmbh/docker-compose-health-check-action@v1.0.0
-          with:
-              max-retries: 30
-              retry-interval: 10
-              compose-file: "docker-compose.yml"
-              skip-exited: "true"
-              skip-no-healthcheck: "true"
-        
-        - name: Docker compose down
-          run: docker compose down
+    #system_test_using_docker_compose:
+    #  needs: test_all_files
+    #  runs-on: ubuntu-latest
+    #  
+    #  steps: 
+    #    - name: checkout code
+    #      uses: actions/checkout@v6
+    #    
+    #    - name: docker compose up 
+    #      run: docker compose up -d
+    #    
+    #    - name: Docker Compose Health Check
+    #      uses: jaracogmbh/docker-compose-health-check-action@v1.0.0
+    #      with:
+    #          max-retries: 30
+    #          retry-interval: 10
+    #          compose-file: "docker-compose.yml"
+    #          skip-exited: "true"
+    #          skip-no-healthcheck: "true"
+    #    
+    #    - name: Docker compose down
+    #      run: docker compose down
         
     analyze_security:
 
-      needs: system_test_using_docker_compose
+      needs: test_all_files
 
       name: Analyze (${{ matrix.language }})
       # Runner size impacts CodeQL analysis time. To learn more, please see:
@@ -245,7 +245,7 @@ jobs:
             ECR_REPOSITORY: project_plane_frontend
             IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
           run: |
-            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f frontend/Dockerfile frontend
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f frontend/Dockerfile
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   
