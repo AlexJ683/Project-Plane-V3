@@ -1,10 +1,12 @@
 FROM python:3.11.9-slim AS base
 
-WORKDIR /Project_plane_build/frontend
+WORKDIR /Project_plane_build
 
 COPY . .
 
-RUN pip install -r requirements_Frontend.txt
+RUN pip install -r frontend/requirements_Frontend.txt
+
+WORKDIR /Project_plane_build/backend
 
 EXPOSE 8501
 

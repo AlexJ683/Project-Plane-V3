@@ -4,7 +4,7 @@ WORKDIR /Project_plane_build
 
 COPY . .
 
-RUN pip install -r requirements_Backend.txt
+RUN pip install -r backend/requirements_Backend.txt
 
 WORKDIR /Project_plane_build/backend
 
