@@ -40,7 +40,7 @@ class Data_processing():
             self.data_for_upload = self.data.to_dict(orient="records")
 
     def load_data(self):
-        url = "http://13.60.194.224:8000/all_items/"
+        url = "http://51.20.83.225:8000/all_items/"
         data = requests.get(url)
         flights = data.json()
         df = pd.DataFrame(flights)
@@ -82,7 +82,7 @@ class Data_processing():
         return self.data_for_upload
 
     def post_data(self):
-        url = "http://13.60.194.224:8000/posts/"
+        url = "http://51.20.83.225:8000/posts/"
         for data in self.data_for_upload:
             try:
                 if len(self.data) != 0 and data[
