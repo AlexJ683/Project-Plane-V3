@@ -6,7 +6,7 @@ COPY . .
 
 RUN pip install -r frontend/requirements_Frontend.txt
 
-WORKDIR /Project_plane_build/backend
+WORKDIR /Project_plane_build/frontend
 
 EXPOSE 8501
 
